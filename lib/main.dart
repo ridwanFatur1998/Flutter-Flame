@@ -1,89 +1,20 @@
-import 'package:flame/events.dart';
-import 'package:flame/game.dart';
-import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
-import 'package:flame/components.dart';
-import 'dart:math' as math;
+import 'main_game_page.dart';
 
 void main() {
-  runApp(
-    GameWidget(
-      game: MyGame(),
-    ),
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const App());
 }
 
-class MyGame extends FlameGame with TapCallbacks {
-  @override
-  Future<void> onLoad() async {
-    add(Square(size / 2));
-  }
+class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
-  void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    if (!event.handled) {
-      final touchPoint = event.canvasPosition;
-      add(Square(touchPoint));
-    }
-  }
-}
-
-class Square extends RectangleComponent with TapCallbacks {
-  static const speed = 3;
-  static const squareSize = 128.0;
-  static const indicatorSize = 12.0;
-
-  static final Paint red = BasicPalette.red.paint();
-  static final Paint blue = BasicPalette.blue.paint();
-  static final Paint yellow = BasicPalette.yellow.paint();
-  static final Paint green = BasicPalette.green.paint();
-
-  Square(Vector2 position)
-      : super(
-          position: position,
-          size: Vector2.all(squareSize),
-          anchor: Anchor.center,
-          paint: yellow,
-        );
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-    angle += speed * dt;
-    angle %= 2 * math.pi;
-  }
-
-  @override
-  Future<void> onLoad() async {
-    super.onLoad();
-    add(
-      RectangleComponent(
-        size: Vector2.all(indicatorSize),
-        paint: blue,
-      ),
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Tetris',
+      home: MainGamePage(),
     );
-    add(
-      RectangleComponent(
-        size: Vector2.all(indicatorSize),
-        paint: green,
-        position: size / 2,
-        anchor: Anchor.center,
-      ),
-    );
-    add(
-      RectangleComponent(
-        position: size / 2,
-        size: Vector2.all(indicatorSize),
-        anchor: Anchor.center,
-        paint: red,
-      ),
-    );
-  }
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    removeFromParent();
-    event.handled = true;
   }
 }
