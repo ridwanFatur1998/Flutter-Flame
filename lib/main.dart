@@ -1,4 +1,3 @@
-import 'package:desktop_window/desktop_window.dart';
 import 'package:my_first_flame/helpers/navigation_keys.dart';
 
 import 'my_game.dart';
@@ -12,7 +11,8 @@ void main() async {
   // await DesktopWindow.setMaxWindowSize(const Size(500,500));
   // await DesktopWindow.setMinWindowSize(const Size(500,500));
 
-  final game = MyGame();
+  final game = MyGame(viewportResolution: Vector2(500, 500));
+
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
